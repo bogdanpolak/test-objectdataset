@@ -1,0 +1,23 @@
+Argentina	Buenos Aires	2776138
+Argentina	Córdoba	1613211
+Argentina	Rosario	1325090
+Argentina	Mendoza	1109104
+Argentina	La Plata	957800
+Argentina	Tucumán	903100
+Argentina	Mar del Plata	710600
+Argentina	Salta	556400
+Argentina	Santa Fe	524300
+Argentina	San Juan	512407
+Argentina	Resistencia	452800
+Argentina	Neuquén	400600
+Argentina	Santiago del Estero	397200
+Argentina	Corrientes	342400
+Argentina	Avellaneda	328980
+Argentina	Bahía Blanca	310200
+Argentina	San Salvador de Jujuy	265249
+Argentina	Quilmes	230810
+Argentina	Lanús	212152
+Argentina	Comodoro Rivadavia	182631
+
+Bolivia
+Brazil
