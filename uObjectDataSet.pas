@@ -32,6 +32,10 @@ type
 
 implementation
 
+resourcestring
+  StrAttributeNotFound = 'Attribute: %s.%s not found. Can''t connect ' +
+    'data field: %s';
+
 {$REGION 'Methods with TDataSet events implementations'}
 
 procedure TObjectDataSet.AfterDelete(aDataSet: TDataSet);
@@ -129,13 +133,22 @@ var
   rttitype: TRttiType;
   rttifield: TRttiField;
   i: Integer;
+  DataFieldName: string;
+  ObjectFieldName: string;
+  msg: string;
 begin
   rttitype := ctx.GetType(Self.ClassType);
   for i := 0 to Self.FDataSet.Fields.Count - 1 do
   begin
-
-    rttifield := rttitype.GetField('FField' + Self.FDataSet.Fields[i]
-      .FieldName);
+    DataFieldName := Self.FDataSet.Fields[i].FieldName;
+    ObjectFieldName := 'FField' + DataFieldName;
+    rttifield := rttitype.GetField(ObjectFieldName);
+    if not Assigned(rttifield) then
+    begin
+      msg := Format(StrAttributeNotFound, [Self.ClassName, ObjectFieldName,
+        DataFieldName]);
+      raise Exception.Create(msg);
+    end;
     rttifield.SetValue(Self, Self.FDataSet.Fields[i]);
   end;
 end;
