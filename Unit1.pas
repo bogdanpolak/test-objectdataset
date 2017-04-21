@@ -49,6 +49,10 @@ var
 begin
   Countries := TCountries.Create(ClientDataSet1);
   StringGrid1.ColCount := 6;
+  StringGrid1.ColWidths[0] := 32;
+  StringGrid1.ColWidths[1] := 100;
+  StringGrid1.ColWidths[2] := 90;
+  StringGrid1.ColWidths[3] := 90;
   StringGrid1.RowCount := Countries.FDataSet.RecordCount + 1;
   Countries.ForEach(
     procedure()

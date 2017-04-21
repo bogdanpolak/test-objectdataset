@@ -2,9 +2,9 @@
 <DATAPACKET Version="2.0">
     <METADATA>
         <FIELDS>
-            <FIELD attrname="Name" fieldtype="string.uni" WIDTH="24"/>
-            <FIELD attrname="Capital" fieldtype="string.uni" WIDTH="24"/>
-            <FIELD attrname="Continent" fieldtype="string.uni" WIDTH="24"/>
+            <FIELD attrname="Name" fieldtype="string.uni" WIDTH="48"/>
+            <FIELD attrname="Capital" fieldtype="string.uni" WIDTH="48"/>
+            <FIELD attrname="Continent" fieldtype="string.uni" WIDTH="48"/>
             <FIELD attrname="Area" fieldtype="r8"/>
             <FIELD attrname="Population" fieldtype="r8"/>
         </FIELDS>
