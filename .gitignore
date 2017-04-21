@@ -1,4 +1,12 @@
 # ignore files:
 *.dproj
 *.res
+
+*.dproj.local
+*.exe
+*.identcache
+*.stat
+*.dcu
+*.dcu
+
 __history/*
