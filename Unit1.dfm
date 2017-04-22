@@ -11,6 +11,8 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
   DesignSize = (
     574
     325)
@@ -122,5 +124,11 @@ object Form1: TForm1
     object ClientDataSet1Population: TFloatField
       FieldName = 'Population'
     end
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    Left = 240
+    Top = 8
   end
 end

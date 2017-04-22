@@ -7,7 +7,24 @@ uses
   Dialogs, Grids, StdCtrls, DB, DBClient, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBGrids;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBGrids,
+  uObjectDataSet, Vcl.ExtCtrls;
+
+type
+  TCountries = class(TObjectDataSet)
+  private
+    FTag: integer;
+  protected
+  public
+    FFieldName: TWideStringField;
+    FFieldCapital: TWideStringField;
+    FFieldContinent: TWideStringField;
+    FFieldArea: TFloatField;
+    FFieldPopulation: TFloatField;
+    procedure AfterScroll; overload;
+    procedure AfterScroll(aDataSet: TDataSet); overload;
+    property Tag: integer read FTag;
+  end;
 
 type
   TForm1 = class(TForm)
@@ -19,8 +36,13 @@ type
     ClientDataSet1Continent: TWideStringField;
     ClientDataSet1Area: TFloatField;
     ClientDataSet1Population: TFloatField;
+    Timer1: TTimer;
     procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Timer1Timer(Sender: TObject);
   private
+    Countries: TCountries;
     { Private declarations }
   public
     { Public declarations }
@@ -33,33 +55,16 @@ implementation
 
 {$R *.dfm}
 
-uses uObjectDataSet;
-
-type
-  TCountries = class(TObjectDataSet)
-  private
-    FHighlited: Boolean;
-  protected
-  public
-    FFieldName: TWideStringField;
-    FFieldCapital: TWideStringField;
-    FFieldContinent: TWideStringField;
-    FFieldArea: TFloatField;
-    FFieldPopulation: TFloatField;
-    procedure AfterScroll(aDataSet: TDataSet);
-  end;
-
 procedure TCountries.AfterScroll(aDataSet: TDataSet);
 begin
-  FHighlited := (FFieldContinent.Value='Europe');
+  if FFieldContinent.Value='North America' then
+    inc(FTag);
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
-  Countries: TCountries;
   GridRow: Integer;
 begin
-  Countries := TCountries.Create(ClientDataSet1);
   StringGrid1.ColCount := 6;
   StringGrid1.ColWidths[0] := 32;
   StringGrid1.ColWidths[1] := 100;
@@ -81,7 +86,26 @@ begin
       StringGrid1.Cells[4, GridRow] := Countries.FFieldArea.AsString;
       StringGrid1.Cells[5, GridRow] := Countries.FFieldPopulation.AsString;
     end);
+end;
+
+procedure TCountries.AfterScroll;
+begin
+  raise EAbstractError.Create('Tej metody nie mo¿e podczepiæ TObjectDataSet');
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
   Countries.Free;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  Countries := TCountries.Create(ClientDataSet1);
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  Caption := Countries.Tag.ToString;
 end;
 
 end.

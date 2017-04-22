@@ -86,14 +86,17 @@ procedure TObjectDataSet.ConnectMethodsToEvents;
     ctx: TRttiContext;
     methodRtti: TRttiMethod;
   begin
-    methodRtti := ctx.GetType(Self.ClassType).GetMethod(methodName);
-    if Assigned(methodRtti) then
-    begin
-      TMethod(Result).Code := methodRtti.CodeAddress;
-      TMethod(Result).Data := Self;
-    end
-    else
-      Result := nil;
+    Result := nil;
+    for methodRtti in ctx.GetType(Self.ClassType).GetMethods do
+      if methodRtti.Name = methodName then
+      begin
+        if Length(methodRtti.GetParameters) = 1 then
+        { TODO : Sprawdziæ czy metoda ma jeden parametr typu TDataSet }
+        begin
+          TMethod(Result).Code := methodRtti.CodeAddress;
+          TMethod(Result).Data := Self;
+        end;
+      end;
   end;
   procedure SetDataSetEvent(eventName: string;
     eventHandler: TDataSetNotifyEvent);
