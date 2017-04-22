@@ -3,7 +3,7 @@ unit uObjectDataSet;
 interface
 
 uses
-  Rtti, DB, SysUtils;
+  DB, SysUtils;
 
 type
   TObjectDataSet = class
@@ -12,106 +12,32 @@ type
     constructor Create(DataSet: TDataSet);
     procedure ForEach(OnEachRow: TProc);
   protected
-    procedure AfterDelete(aDataSet: TDataSet);
-    procedure AfterOpen(aDataSet: TDataSet);
-    procedure AfterPost(aDataSet: TDataSet);
-    procedure AfterRefresh(aDataSet: TDataSet);
-    procedure AfterScroll(aDataSet: TDataSet);
-    procedure BeforeDelete(aDataSet: TDataSet);
-    procedure BeforeEdit(aDataSet: TDataSet);
-    procedure BeforeInsert(aDataSet: TDataSet);
-    procedure BeforePost(aDataSet: TDataSet);
-    procedure OnCalcFields(aDataSet: TDataSet);
-    procedure OnEditError(DataSet: TDataSet; E: EDatabaseError;
-      var Action: TDataAction);
-    procedure OnNewRecord(aDataSet: TDataSet);
   private
-    procedure HookEvents;
     procedure ConnectDBFieldsToObjectFields;
+    procedure ConnectMethodsToEvents;
   end;
 
 implementation
+
+uses
+  Rtti, Generics.Collections;
 
 resourcestring
   StrAttributeNotFound = 'Attribute: %s.%s not found. Can''t connect ' +
     'data field: %s';
 
-{$REGION 'Methods with TDataSet events implementations'}
-
-procedure TObjectDataSet.AfterDelete(aDataSet: TDataSet);
-begin
-  // AfterDelete;
-end;
-
-procedure TObjectDataSet.AfterOpen(aDataSet: TDataSet);
-begin
-  // AfterOpen;
-end;
-
-procedure TObjectDataSet.AfterPost(aDataSet: TDataSet);
-begin
-  // AfterPost;
-end;
-
-procedure TObjectDataSet.AfterScroll(aDataSet: TDataSet);
-begin
-  // AfterScroll;
-end;
-
-procedure TObjectDataSet.AfterRefresh(aDataSet: TDataSet);
-begin
-  // AfterRefresh;
-end;
-
-procedure TObjectDataSet.BeforeDelete(aDataSet: TDataSet);
-begin
-  // BeforeDelete;
-end;
-
-procedure TObjectDataSet.BeforeEdit(aDataSet: TDataSet);
-begin
-  // BeforeEdit;
-end;
-
-procedure TObjectDataSet.BeforeInsert(aDataSet: TDataSet);
-begin
-  // BeforeInsert;
-end;
-
-procedure TObjectDataSet.BeforePost(aDataSet: TDataSet);
-begin
-  // BeforePost;
-end;
-
-procedure TObjectDataSet.OnCalcFields(aDataSet: TDataSet);
-begin
-  // OnCalcFields;
-end;
-
-procedure TObjectDataSet.OnNewRecord(aDataSet: TDataSet);
-begin
-  // OnNewRecord;
-end;
-
-procedure TObjectDataSet.OnEditError(DataSet: TDataSet; E: EDatabaseError;
-  var Action: TDataAction);
-begin
-  // OnEditError(E, Action);
-end;
-{$ENDREGION}
-
 constructor TObjectDataSet.Create(DataSet: TDataSet);
 begin
   FDataSet := DataSet;
-  HookEvents;
-  ConnectDBFieldsToObjectFields
+  ConnectDBFieldsToObjectFields;
+  ConnectMethodsToEvents;
 end;
 
 procedure TObjectDataSet.ForEach(OnEachRow: TProc);
 var
-  Bookmark: TBookmark;
+  bookmark: TBookmark;
 begin
-  Bookmark := FDataSet.GetBookmark;
+  bookmark := FDataSet.GetBookmark;
   FDataSet.DisableControls;
   try
     FDataSet.First;
@@ -120,9 +46,10 @@ begin
       OnEachRow;
       FDataSet.Next;
     end;
+    if FDataSet.BookmarkValid(bookmark) then
+      FDataSet.GotoBookmark(bookmark);
   finally
-    FDataSet.GotoBookmark(Bookmark);
-    FDataSet.FreeBookmark(Bookmark);
+    FDataSet.FreeBookmark(bookmark);
     FDataSet.EnableControls;
   end;
 end;
@@ -130,78 +57,73 @@ end;
 procedure TObjectDataSet.ConnectDBFieldsToObjectFields;
 var
   ctx: TRttiContext;
-  rttitype: TRttiType;
-  rttifield: TRttiField;
+  typeRuntimeInfo: TRttiType;
+  fieldRuntimeInfo: TRttiField;
   i: Integer;
-  DataFieldName: string;
-  ObjectFieldName: string;
+  dataFieldName: string;
+  objectFieldName: string;
   msg: string;
 begin
-  rttitype := ctx.GetType(Self.ClassType);
+  typeRuntimeInfo := ctx.GetType(Self.ClassType);
   for i := 0 to Self.FDataSet.Fields.Count - 1 do
   begin
-    DataFieldName := Self.FDataSet.Fields[i].FieldName;
-    ObjectFieldName := 'FField' + DataFieldName;
-    rttifield := rttitype.GetField(ObjectFieldName);
-    if not Assigned(rttifield) then
+    dataFieldName := Self.FDataSet.Fields[i].FieldName;
+    objectFieldName := 'FField' + dataFieldName;
+    fieldRuntimeInfo := typeRuntimeInfo.GetField(objectFieldName);
+    if not Assigned(fieldRuntimeInfo) then
     begin
-      msg := Format(StrAttributeNotFound, [Self.ClassName, ObjectFieldName,
-        DataFieldName]);
+      msg := Format(StrAttributeNotFound, [Self.ClassName, objectFieldName,
+        dataFieldName]);
       raise Exception.Create(msg);
     end;
-    rttifield.SetValue(Self, Self.FDataSet.Fields[i]);
+    fieldRuntimeInfo.SetValue(Self, Self.FDataSet.Fields[i]);
   end;
 end;
 
-procedure TObjectDataSet.HookEvents;
+procedure TObjectDataSet.ConnectMethodsToEvents;
+  function GetEventHandler(methodName: string): TDataSetNotifyEvent;
+  var
+    ctx: TRttiContext;
+    methodRtti: TRttiMethod;
+  begin
+    methodRtti := ctx.GetType(Self.ClassType).GetMethod(methodName);
+    if Assigned(methodRtti) then
+    begin
+      TMethod(Result).Code := methodRtti.CodeAddress;
+      TMethod(Result).Data := Self;
+    end
+    else
+      Result := nil;
+  end;
+  procedure SetDataSetEvent(eventName: string;
+    eventHandler: TDataSetNotifyEvent);
+  var
+    ctx: TRttiContext;
+    propertyRtti: TRttiProperty;
+  begin
+    propertyRtti := ctx.GetType(FDataSet.ClassInfo).GetProperty(eventName);
+    { TODO : Dodaæ Assert sprawdzaj¹cy czy property by³o ustawione }
+    // u¿yæ: propertyRtti.GetValue(FDataSet);
+    propertyRtti.SetValue(FDataSet,
+      TValue.From<TDataSetNotifyEvent>(eventHandler));
+  end;
+
+const
+  SupportedEvents: TArray<String> = ['AfterDelete', 'AfterOpen', 'AfterPost',
+    'AfterScroll', 'AfterRefresh', 'BeforeDelete', 'BeforeEdit', 'BeforeInsert',
+    'BeforePost', 'OnCalcFields', 'OnNewRecord'];
+var
+  i: Integer;
+  n: string;
+  handler: TDataSetNotifyEvent;
 begin
-  Assert(not Assigned(FDataSet.BeforePost), 'BeforePost is set on ' +
-    FDataSet.name);
-  FDataSet.BeforePost := BeforePost;
-
-  Assert(not Assigned(FDataSet.BeforeDelete), 'BeforeDelete is set on ' +
-    FDataSet.name);
-  FDataSet.BeforeDelete := BeforeDelete;
-
-  Assert(not Assigned(FDataSet.BeforeEdit), 'BeforeEdit is set on ' +
-    FDataSet.name);
-  FDataSet.BeforeEdit := BeforeEdit;
-
-  Assert(not Assigned(FDataSet.BeforeInsert), 'BeforeInsert is set on ' +
-    FDataSet.name);
-  FDataSet.BeforeInsert := BeforeInsert;
-
-  Assert(not Assigned(FDataSet.AfterOpen), 'AfterOpen is set on ' +
-    FDataSet.name);
-  FDataSet.AfterOpen := AfterOpen;
-
-  Assert(not Assigned(FDataSet.AfterPost), 'AfterPost is set on ' +
-    FDataSet.name);
-  FDataSet.AfterPost := AfterPost;
-
-  Assert(not Assigned(FDataSet.AfterDelete), 'AfterDelete is set on ' +
-    FDataSet.name);
-  FDataSet.AfterDelete := AfterDelete;
-
-  Assert(not Assigned(FDataSet.OnCalcFields), 'OnCalcFields is set on ' +
-    FDataSet.name);
-  FDataSet.OnCalcFields := OnCalcFields;
-
-  Assert(not Assigned(FDataSet.OnNewRecord), 'OnNewRecord is set on ' +
-    FDataSet.name);
-  FDataSet.OnNewRecord := OnNewRecord;
-
-  Assert(not Assigned(FDataSet.OnEditError), 'OnEditError is set on ' +
-    FDataSet.name);
-  FDataSet.OnEditError := OnEditError;
-
-  Assert(not Assigned(FDataSet.AfterScroll), 'AfterScroll is set on ' +
-    FDataSet.name);
-  FDataSet.AfterScroll := AfterScroll;
-
-  Assert(not Assigned(FDataSet.AfterRefresh), 'AfterRefresh is set on ' +
-    FDataSet.name);
-  FDataSet.AfterRefresh := AfterRefresh;
+  for i := 0 to Length(SupportedEvents) - 1 do
+  begin
+    n := SupportedEvents[i];
+    handler := GetEventHandler(n);
+    if Assigned(handler) then
+      SetDataSetEvent(n, handler);
+  end;
 end;
 
 end.

@@ -4,7 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, StdCtrls, DB, DBClient;
+  Dialogs, Grids, StdCtrls, DB, DBClient, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBGrids;
 
 type
   TForm1 = class(TForm)
@@ -34,13 +37,22 @@ uses uObjectDataSet;
 
 type
   TCountries = class(TObjectDataSet)
+  private
+    FHighlited: Boolean;
+  protected
   public
     FFieldName: TWideStringField;
     FFieldCapital: TWideStringField;
     FFieldContinent: TWideStringField;
     FFieldArea: TFloatField;
     FFieldPopulation: TFloatField;
+    procedure AfterScroll(aDataSet: TDataSet);
   end;
+
+procedure TCountries.AfterScroll(aDataSet: TDataSet);
+begin
+  FHighlited := (FFieldContinent.Value='Europe');
+end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
@@ -54,6 +66,11 @@ begin
   StringGrid1.ColWidths[2] := 90;
   StringGrid1.ColWidths[3] := 90;
   StringGrid1.RowCount := Countries.FDataSet.RecordCount + 1;
+  StringGrid1.Rows[0].CommaText := ',' + Countries.FFieldName.DisplayName +
+    ',' + Countries.FFieldCapital.DisplayName + ',' +
+    Countries.FFieldContinent.DisplayName + ',' +
+    Countries.FFieldArea.DisplayName + ',' +
+    Countries.FFieldPopulation.DisplayName;
   Countries.ForEach(
     procedure()
     begin

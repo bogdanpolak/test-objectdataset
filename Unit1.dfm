@@ -32,8 +32,6 @@ object Form1: TForm1
     Height = 278
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 1
-    ExplicitWidth = 474
-    ExplicitHeight = 193
     ColWidths = (
       64
       64
@@ -104,19 +102,19 @@ object Form1: TForm1
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 120
-    Top = 65529
+    Left = 144
+    Top = 8
     object ClientDataSet1Name: TWideStringField
       FieldName = 'Name'
-      Size = 12
+      Size = 24
     end
     object ClientDataSet1Capital: TWideStringField
       FieldName = 'Capital'
-      Size = 12
+      Size = 24
     end
     object ClientDataSet1Continent: TWideStringField
       FieldName = 'Continent'
-      Size = 12
+      Size = 24
     end
     object ClientDataSet1Area: TFloatField
       FieldName = 'Area'
