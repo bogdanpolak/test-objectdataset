@@ -21,7 +21,7 @@ type
     procedure First;
     procedure Prior;
     procedure Next;
-    function RecordCount :integer;
+    function RecordCount: integer;
     property DataSet: TDataSet read FDataSet;
     property RecNo: integer read GetRecNo;
   end;
@@ -105,7 +105,7 @@ var
   ctx: TRttiContext;
   typeRuntimeInfo: TRttiType;
   fieldRuntimeInfo: TRttiField;
-  i: Integer;
+  i: integer;
   dataFieldName: string;
   objectFieldName: string;
   msg: string;
@@ -153,22 +153,24 @@ procedure TObjectDataSet.ConnectMethodsToEvents;
     propertyRtti := ctx.GetType(FDataSet.ClassInfo).GetProperty(eventName);
     { TODO : Dodaæ Assert sprawdzaj¹cy czy property by³o ustawione }
     // u¿yæ: propertyRtti.GetValue(FDataSet);
-    propertyRtti.SetValue(FDataSet,
-      TValue.From<TDataSetNotifyEvent>(eventHandler));
+    propertyRtti.SetValue(FDataSet, TValue.From<TDataSetNotifyEvent>
+        (eventHandler));
   end;
 
-const
-  SupportedEvents: TArray<String> = ['AfterDelete', 'AfterOpen', 'AfterPost',
-    'AfterScroll', 'AfterRefresh', 'BeforeDelete', 'BeforeEdit', 'BeforeInsert',
-    'BeforePost', 'OnCalcFields', 'OnNewRecord'];
 var
-  i: Integer;
+  SupportedEvents: TArray<String>;
+var
+  i: integer;
   n: string;
   handler: TDataSetNotifyEvent;
 begin
-  for i := 0 to Length(SupportedEvents) - 1 do
+  SupportedEvents := TArray<String>.Create('AfterDelete', 'AfterOpen',
+    'AfterPost', 'AfterScroll', 'AfterRefresh', 'BeforeDelete', 'BeforeEdit',
+    'BeforeInsert', 'BeforePost', 'OnCalcFields', 'OnNewRecord');
+  // for i := 0 to Length(SupportedEvents) - 1 do
+  for n in SupportedEvents do
   begin
-    n := SupportedEvents[i];
+    // n := SupportedEvents[i];
     handler := GetEventHandler(n);
     if Assigned(handler) then
       SetDataSetEvent(n, handler);

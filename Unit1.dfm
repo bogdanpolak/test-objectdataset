@@ -57,7 +57,12 @@ object Form1: TForm1
       24)
   end
   object ClientDataSet1: TClientDataSet
-    PersistDataPacket.Data = {
+    Active = True
+    Aggregates = <>
+    Params = <>
+    Left = 144
+    Top = 8
+    Data = {
       DE0600009619E0BD010000001800000005001400000003000000CA00044E616D
       6501004A0010000100055749445448020002003000074361706974616C01004A
       001000010005574944544802000200300009436F6E74696E656E7401004A0010
@@ -114,11 +119,6 @@ object Form1: TForm1
       750065006C0061000E43006100720061006300610073001A53006F0075007400
       6800200041006D0065007200690063006100000000005ED52B410000000092C9
       7241}
-    Active = True
-    Aggregates = <>
-    Params = <>
-    Left = 144
-    Top = 8
     object ClientDataSet1Name: TWideStringField
       FieldName = 'Name'
       Size = 24
@@ -145,7 +145,16 @@ object Form1: TForm1
     Top = 8
   end
   object ClientDataSet2: TClientDataSet
-    PersistDataPacket.Data = {
+    Active = True
+    Aggregates = <>
+    IndexFieldNames = 'Country'
+    MasterFields = 'Name'
+    MasterSource = DataSource1
+    PacketRecords = 0
+    Params = <>
+    Left = 240
+    Top = 8
+    Data = {
       DF3600009619E0BD0100000018000000040025010000030000006D00024C5004
       00010010000000044E616D6501004A0010000100055749445448020002003C00
       07436F756E74727901004A0010000100055749445448020002003C000A506F70
@@ -586,15 +595,6 @@ object Form1: TForm1
       00740069006E0061009B9D1800000001000000184200750065006E006F007300
       2000410069007200650073001241007200670065006E00740069006E0061004A
       5C2A00}
-    Active = True
-    Aggregates = <>
-    IndexFieldNames = 'Country'
-    MasterFields = 'Name'
-    MasterSource = DataSource1
-    PacketRecords = 0
-    Params = <>
-    Left = 240
-    Top = 8
     object ClientDataSet2LP: TIntegerField
       FieldName = 'LP'
     end

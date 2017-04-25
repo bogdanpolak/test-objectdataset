@@ -4,12 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, StdCtrls, DB, DBClient, FireDAC.Stan.Intf,
-  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, DBGrids, ExtCtrls,
-  uObjectDataSet, uData.Customers, uData.Cities,
-  System.JSON.Converters;
+  Dialogs, Grids, StdCtrls, DB, DBClient, DBGrids, ExtCtrls,
+  uObjectDataSet, uData.Customers, uData.Cities;
 
 type
   TForm1 = class(TForm)
@@ -144,7 +140,7 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-  Caption := Countries.Tag.ToString;
+  Caption := IntToStr(Countries.Tag);
 end;
 
 end.
