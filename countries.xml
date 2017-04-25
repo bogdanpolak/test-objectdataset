@@ -29,5 +29,7 @@
         <ROW Name="United States of America" Capital="Washington" Continent="North America" Area="9363130" Population="249200000"/>
         <ROW Name="Uruguay" Capital="Montevideo" Continent="South America" Area="176140" Population="3002000"/>
         <ROW Name="Venezuela" Capital="Caracas" Continent="South America" Area="912047" Population="19700000"/>
+        <ROW Name="Poland" Capital="Warsaw" Continent="Europe" Area="312679" Population="38454576"/>
+        <ROW Name="Germany" Capital="Berlin" Continent="Europe" Area="357168" Population="82175700"/>
     </ROWDATA>
 </DATAPACKET>

@@ -7,29 +7,13 @@ uses
   Dialogs, Grids, StdCtrls, DB, DBClient, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBGrids,
-  uObjectDataSet, Vcl.ExtCtrls;
-
-type
-  TCountries = class(TObjectDataSet)
-  private
-    FTag: integer;
-  protected
-  public
-    FFieldName: TWideStringField;
-    FFieldCapital: TWideStringField;
-    FFieldContinent: TWideStringField;
-    FFieldArea: TFloatField;
-    FFieldPopulation: TFloatField;
-    procedure AfterScroll; overload;
-    procedure AfterScroll(aDataSet: TDataSet); overload;
-    property Tag: integer read FTag;
-  end;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, DBGrids, ExtCtrls,
+  uObjectDataSet, uData.Customers, uData.Cities,
+  System.JSON.Converters;
 
 type
   TForm1 = class(TForm)
     Button1: TButton;
-    StringGrid1: TStringGrid;
     ClientDataSet1: TClientDataSet;
     ClientDataSet1Name: TWideStringField;
     ClientDataSet1Capital: TWideStringField;
@@ -37,12 +21,25 @@ type
     ClientDataSet1Area: TFloatField;
     ClientDataSet1Population: TFloatField;
     Timer1: TTimer;
-    procedure Button1Click(Sender: TObject);
+    ClientDataSet2: TClientDataSet;
+    ClientDataSet2LP: TIntegerField;
+    ClientDataSet2Name: TWideStringField;
+    ClientDataSet2Country: TWideStringField;
+    ClientDataSet2Population: TIntegerField;
+    DataSource1: TDataSource;
+    DataSource2: TDataSource;
+    GroupBox1: TGroupBox;
+    DrawGrid1: TDrawGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Timer1Timer(Sender: TObject);
+    procedure DrawGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
   private
     Countries: TCountries;
+    Cities: TCites;
+    MaxPopulation: Double;
+    MaxArea: Double;
     { Private declarations }
   public
     { Public declarations }
@@ -55,52 +52,94 @@ implementation
 
 {$R *.dfm}
 
-procedure TCountries.AfterScroll(aDataSet: TDataSet);
-begin
-  if FFieldContinent.Value='North America' then
-    inc(FTag);
-end;
-
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.DrawGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
 var
-  GridRow: Integer;
+  sCapitalInfo: string;
+  wd: Integer;
+  maxwd: Integer;
 begin
-  StringGrid1.ColCount := 6;
-  StringGrid1.ColWidths[0] := 32;
-  StringGrid1.ColWidths[1] := 100;
-  StringGrid1.ColWidths[2] := 90;
-  StringGrid1.ColWidths[3] := 90;
-  StringGrid1.RowCount := Countries.FDataSet.RecordCount + 1;
-  StringGrid1.Rows[0].CommaText := ',' + Countries.FFieldName.DisplayName +
-    ',' + Countries.FFieldCapital.DisplayName + ',' +
-    Countries.FFieldContinent.DisplayName + ',' +
-    Countries.FFieldArea.DisplayName + ',' +
-    Countries.FFieldPopulation.DisplayName;
-  Countries.ForEach(
+  if gdFocused in State then
+    DrawGrid1.Canvas.DrawFocusRect(Rect);
+  if (ARow > 0) and (ACol = 1) then
+  begin
+    while Countries.RecNo > ARow do
+      Countries.Prior;
+    while Countries.RecNo < ARow do
+      Countries.Next;
+    DrawGrid1.Canvas.Font.Size := 17;
+    DrawGrid1.Canvas.TextOut(Rect.Left + 5, Rect.Top + 3,
+      Countries.FFieldName.value);
+    DrawGrid1.Canvas.Font.Size := 9;
+    DrawGrid1.Canvas.TextOut(Rect.Left + 5, Rect.Top + 31,
+      Countries.FFieldContinent.value);
+    sCapitalInfo := Countries.FFieldCapital.value;
+    wd := DrawGrid1.Canvas.TextWidth(sCapitalInfo);
+    DrawGrid1.Canvas.Font.Color := RGB(64, 0, 0);
+    DrawGrid1.Canvas.TextOut(Rect.Right - 10 - wd, Rect.Top + 31, sCapitalInfo);
+    DrawGrid1.Canvas.Font.Color := DrawGrid1.Font.Color;
+  end;
+  if (ARow > 0) and (ACol = 2) then
+  begin
+    DrawGrid1.Canvas.Font.Size := 9;
+    DrawGrid1.Canvas.TextOut(Rect.Left + 5, Rect.Top + 5,
+      FormatFloat('###,###,###,###', Countries.FFieldArea.value) + ' km2');
+    DrawGrid1.Canvas.TextOut(Rect.Left + 5, Rect.Top + 25,
+      FormatFloat('###,###,###,###', Countries.FFieldPopulation.value));
+    maxwd := Rect.Right - Rect.Left - 10;
+    wd := round(maxwd * Countries.FFieldArea.value / MaxArea);
+    DrawGrid1.Canvas.Brush.Style := bsSolid;
+    DrawGrid1.Canvas.Pen.Style := psClear;
+    DrawGrid1.Canvas.Brush.Color := RGB(128, 255, 128);
+    DrawGrid1.Canvas.Rectangle(Rect.Left + 5, Rect.Top + 20, Rect.Left + 5 + wd,
+      Rect.Top + 24);
+    wd := round(maxwd * Countries.FFieldPopulation.value / MaxPopulation);
+    DrawGrid1.Canvas.Brush.Color := RGB(228, 228, 0);
+    DrawGrid1.Canvas.Rectangle(Rect.Left + 5, Rect.Top + 40, Rect.Left + 5 + wd,
+      Rect.Top + 44);
+    DrawGrid1.Canvas.Pen.Style := psSolid;
+    DrawGrid1.Canvas.Brush.Style := bsClear;
+  end;
+  (*
+  Cities.ForEachMute(
     procedure()
     begin
-      GridRow := Countries.FDataSet.RecNo;
-      StringGrid1.Cells[1, GridRow] := Countries.FFieldName.value;
-      StringGrid1.Cells[2, GridRow] := Countries.FFieldCapital.value;
-      StringGrid1.Cells[3, GridRow] := Countries.FFieldContinent.value;
-      StringGrid1.Cells[4, GridRow] := Countries.FFieldArea.AsString;
-      StringGrid1.Cells[5, GridRow] := Countries.FFieldPopulation.AsString;
+      s := s + Cities.FFieldName.value + ', ';
+      if Cities.FFieldPopulation.value < 600000 then
+        inc(TopCities);
     end);
-end;
-
-procedure TCountries.AfterScroll;
-begin
-  raise EAbstractError.Create('Tej metody nie mo¿e podczepiæ TObjectDataSet');
+  *)
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Countries.Free;
+  Cities.Free;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   Countries := TCountries.Create(ClientDataSet1);
+  Cities := TCites.Create(ClientDataSet2);
+  // ----
+  DrawGrid1.DefaultRowHeight := 48;
+  DrawGrid1.ColCount := 8;
+  DrawGrid1.RowHeights[0] := 24;
+  DrawGrid1.ColWidths[0] := 32;
+  DrawGrid1.ColWidths[1] := 260;
+  DrawGrid1.ColWidths[2] := 120;
+  DrawGrid1.ColWidths[3] := 90;
+  DrawGrid1.RowCount := Countries.RecordCount + 1;
+  MaxPopulation := 0;
+  MaxArea := 0;
+  Countries.ForEachMute(
+    procedure()
+    begin
+      if MaxArea < Countries.FFieldArea.value then
+        MaxArea := Countries.FFieldArea.value;
+      if MaxPopulation < Countries.FFieldPopulation.value then
+        MaxPopulation := Countries.FFieldPopulation.value;
+    end);
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);

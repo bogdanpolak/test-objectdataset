@@ -1,23 +1,295 @@
-Argentina	Buenos Aires	2776138
-Argentina	C�rdoba	1613211
-Argentina	Rosario	1325090
-Argentina	Mendoza	1109104
-Argentina	La Plata	957800
-Argentina	Tucum�n	903100
-Argentina	Mar del Plata	710600
-Argentina	Salta	556400
-Argentina	Santa Fe	524300
-Argentina	San Juan	512407
-Argentina	Resistencia	452800
-Argentina	Neuqu�n	400600
-Argentina	Santiago del Estero	397200
-Argentina	Corrientes	342400
-Argentina	Avellaneda	328980
-Argentina	Bah�a Blanca	310200
-Argentina	San Salvador de Jujuy	265249
-Argentina	Quilmes	230810
-Argentina	Lan�s	212152
-Argentina	Comodoro Rivadavia	182631
+﻿LP	City	Country	Population
+1	Buenos Aires	Argentina	2776138
+2	Córdoba	Argentina	1613211
+3	Rosario	Argentina	1325090
+4	Mendoza	Argentina	1109104
+5	La Plata	Argentina	957800
+6	Tucumán	Argentina	903100
+7	Mar del Plata	Argentina	710600
+8	Salta	Argentina	556400
+9	Santa Fe	Argentina	524300
+10	San Juan	Argentina	512407
+11	Resistencia	Argentina	452800
+12	Neuquén	Argentina	400600
+13	Santiago del Estero	Argentina	397200
+14	Corrientes	Argentina	342400
+15	Avellaneda	Argentina	328980
+16	Bahía Blanca	Argentina	310200
+17	San Salvador de Jujuy	Argentina	265249
+18	Quilmes	Argentina	230810
+19	Lanús	Argentina	212152
+20	Comodoro Rivadavia	Argentina	182631
+1	Santa Cruz	Bolivia	1441406
+2	El Alto	Bolivia	842378
+3	La Paz	Bolivia	757184
+4	Cochabamba	Bolivia	630587
+5	Oruro	Bolivia	264683
+6	Sucre	Bolivia	237480
+7	Tarija	Bolivia	179528
+8	Potosí	Bolivia	174973
+1	São Paulo	Brazil	11895893
+2	Rio de Janeiro	Brazil	6453682
+3	Salvador	Brazil	2902927
+4	Brasília	Brazil	2852372
+5	Fortaleza	Brazil	2571896
+6	Belo Horizonte	Brazil	2491109
+7	Manaus	Brazil	2020301
+8	Curitiba	Brazil	1864416
+9	Recife	Brazil	1608488
+10	Porto Alegre	Brazil	1472482
+11	Belém	Brazil	1432844
+12	Goiânia	Brazil	1412364
+13	Guarulhos	Brazil	1312197
+14	Campinas	Brazil	1154617
+15	São Luís	Brazil	1064197
+16	São Gonçalo	Brazil	1031903
+17	Maceió	Brazil	1005319
+18	Duque de Caxias	Brazil	878402
+19	Natal	Brazil	862044
+20	Campo Grande	Brazil	853622
+21	Teresina	Brazil	840600
+22	São Bernardo do Campo	Brazil	811489
+23	Nova Iguaçu	Brazil	806177
+24	João Pessoa	Brazil	780738
+25	Santo André	Brazil	707613
+26	Osasco	Brazil	693271
+27	São José dos Campos	Brazil	681036
+28	Jaboatão dos Guararapes	Brazil	680943
+29	Ribeirão Preto	Brazil	658059
+30	Uberlândia	Brazil	654681
+31	Contagem	Brazil	643476
+32	Sorocaba	Brazil	637187
+33	Aracaju	Brazil	623766
+34	Feira de Santana	Brazil	612000
+35	Cuiabá	Brazil	575480
+36	Joinville	Brazil	554601
+37	Juiz de Fora	Brazil	550710
+38	Londrina	Brazil	543003
+39	Aparecida de Goiânia	Brazil	511323
+1	Toronto	Canada	2615060
+2	Montreal	Canada	1649519
+3	Calgary	Canada	1096833
+4	Ottawa	Canada	883391
+5	Edmonton	Canada	812201
+6	Mississauga	Canada	713443
+7	Winnipeg	Canada	663617
+8	Vancouver	Canada	603502
+9	Brampton	Canada	523911
+10	Hamilton	Canada	519949
+11	Québec	Canada	516622
+12	Surrey	Canada	468251
+13	Laval	Canada	401553
+14	London	Canada	366151
+15	Markham	Canada	301709
+16	Vaughan	Canada	288301
+17	Gatineau	Canada	265349
+1	Santiago	Chile	4657000
+2	Puente Alto	Chile	492603
+3	Maipú	Chile	463103
+4	La Florida	Chile	365563
+5	Viña del Mar	Chile	286931
+6	Antofagasta	Chile	285255
+7	Valparaíso	Chile	263499
+8	Las Condes	Chile	249893
+9	San Bernardo	Chile	237708
+10	Temuco	Chile	227086
+11	Peñalolén	Chile	216060
+12	Concepción	Chile	212003
+13	Rancagua	Chile	206971
+1	Bogotá	Colombia	7840116
+2	Medellín	Colombia	2214494
+3	Cali	Colombia	2119908
+4	Barranquilla	Colombia	1146359
+5	Cartagena	Colombia	892545
+6	Cúcuta	Colombia	587676
+7	Bucaramanga	Colombia	516512
+8	Ibagué	Colombia	498401
+9	Soledad	Colombia	461851
+10	Pereira	Colombia	443554
+11	Santa Marta	Colombia	415270
+12	Soacha	Colombia	402007
+13	San Juan de Pasto	Colombia	382618
+14	Montería	Colombia	381525
+15	Villavicencio	Colombia	380222
+16	Manizales	Colombia	379972
+17	Bello	Colombia	371973
+18	Valledupar	Colombia	354180
+19	Neiva	Colombia	352859
+20	Buenaventura	Colombia	351454
+21	Palmira	Colombia	344470
+22	Armenia	Colombia	306930
+23	Popayán	Colombia	257512
+24	Floridablanca	Colombia	254683
+25	Sincelejo	Colombia	237618
+1	Havana	Cuba	2135498
+2	Santiago de Cuba	Cuba	425851
+3	Camagüey	Cuba	305845
+4	Holguín	Cuba	277050
+5	Guantánamo	Cuba	207857
+6	Santa Clara	Cuba	205812
+1	Guayaquil	Ecuador	2278691
+2	Quito	Ecuador	1607734
+3	Cuenca	Ecuador	329928
+4	Santo Domingo	Ecuador	270875
+5	Machala	Ecuador	231260
+6	Durán	Ecuador	230839
+7	Manta	Ecuador	217553
+8	Portoviejo	Ecuador	206682
+1	San Salvador	El Salvador	540989
+2	Santa Ana	El Salvador	280000
+3	Soyapango	El Salvador	262975
+4	San Miguel	El Salvador	218410
+5	Apopa	El Salvador	217733
+6	Mejicanos	El Salvador	211878
+1	Georgetown	Guyana	118363
+1	Kingston	Jamaica	587798
+2	Montego Bay	Jamaica	96488
+1	Mexico City	Mexico	8851080
+2	Ecatepec	Mexico	1655015
+3	Guadalajara	Mexico	1495182
+4	Puebla	Mexico	1434062
+5	Juárez	Mexico	1321004
+6	Tijuana	Mexico	1300983
+7	León	Mexico	1238962
+8	Zapopan	Mexico	1142483
+9	Monterrey	Mexico	1135512
+10	Nezahualcóyotl	Mexico	1104585
+11	Culiacán	Mexico	905265
+12	Chihuahua	Mexico	809232
+13	Naucalpan	Mexico	792211
+14	Mérida	Mexico	777615
+15	San Luis Potosí	Mexico	722772
+16	Aguascalientes	Mexico	722250
+17	Hermosillo	Mexico	715061
+18	Saltillo	Mexico	709671
+19	Mexicali	Mexico	689775
+20	Guadalupe	Mexico	673616
+21	Acapulco	Mexico	673479
+22	Tlalnepantla	Mexico	653410
+23	Cancún	Mexico	628306
+24	Querétaro	Mexico	626495
+25	Chimalhuacán	Mexico	612383
+26	Torreón	Mexico	608836
+27	Morelia	Mexico	597511
+28	Reynosa	Mexico	589466
+29	Tlaquepaque	Mexico	575942
+30	Tuxtla Gutiérrez	Mexico	537102
+31	Durango	Mexico	518709
+1	Managua	Nicaragua	937489
+2	León	Nicaragua	174051
+1	Asunción	Paraguay	512112
+2	Ciudad del Este	Paraguay	222274
+3	San Lorenzo	Paraguay	204356
+1	Lima	Peru	9866647
+2	Arequipa	Peru	869351
+3	Trujillo	Peru	799550
+4	Chiclayo	Peru	600440
+5	Iquitos	Peru	437376
+6	Piura	Peru	436440
+7	Cusco	Peru	427218
+8	Chimbote	Peru	371012
+9	Huancayo	Peru	364725
+10	Tacna	Peru	293119
+11	Juliaca	Peru	273882
+12	Ica	Peru	244390
+13	Cajamarca	Peru	226031
+14	Pucallpa	Peru	211651
+15	Sullana	Peru	201302
+1	New York	United States of America	8550405
+2	Los Angeles	United States of America	3971883
+3	Chicago	United States of America	2720546
+4	Houston	United States of America	2296224
+5	Philadelphia	United States of America	1567442
+6	Phoenix	United States of America	1563025
+7	San Antonio	United States of America	1469845
+8	San Diego	United States of America	1394928
+9	Dallas	United States of America	1300092
+10	San Jose	United States of America	1026908
+11	Austin	United States of America	931830
+12	Jacksonville	United States of America	868031
+13	San Francisco	United States of America	864816
+14	Indianapolis	United States of America	853173
+15	Columbus	United States of America	850106
+16	Fort Worth	United States of America	833319
+17	Charlotte	United States of America	827097
+18	Seattle	United States of America	684451
+19	Denver	United States of America	682545
+20	El Paso	United States of America	681124
+21	Detroit	United States of America	677116
+22	Washington	United States of America	672228
+23	Boston	United States of America	667137
+24	Memphis	United States of America	655770
+25	Nashville	United States of America	654610
+26	Portland	United States of America	632309
+27	Oklahoma City	United States of America	631346
+28	Las Vegas	United States of America	623747
+29	Baltimore	United States of America	621849
+30	Louisville	United States of America	615366
+31	Milwaukee	United States of America	600155
+32	Albuquerque	United States of America	559121
+33	Tucson	United States of America	531641
+34	Fresno	United States of America	520052
+35	Sacramento	United States of America	490712
+36	Kansas City	United States of America	475378
+37	Long Beach	United States of America	474140
+38	Mesa	United States of America	471825
+39	Atlanta	United States of America	463878
+1	Montevideo	Uruguay	1319108
+2	Salto	Uruguay	104028
+3	Ciudad de la Costa	Uruguay	95176
+1	Caracas	Venezuela	5576000
+2	Maracaibo	Venezuela	4163670
+3	Valencia	Venezuela	2585202
+4	Barquisimeto	Venezuela	1600000
+5	Maracay	Venezuela	1302000
+6	Ciudad Guayana	Venezuela	946606
+7	Barcelona	Venezuela	750000
+8	Maturín	Venezuela	410967
+9	Turmero	Venezuela	344746
+10	Mérida	Venezuela	317410
+11	Ciudad Bolívar	Venezuela	291170
+12	Barinas	Venezuela	284305
+13	Los Teques	Venezuela	279424
+14	Punto Fijo	Venezuela	277017
+15	La Guaira	Venezuela	270792
+16	Santa Teresa del Tuy	Venezuela	261000
+17	Cumaná	Venezuela	257821
+18	El Vigía	Venezuela	250257
+1	Warsaw	Poland	1748916
+2	Kraków	Poland	762448
+3	Łódź	Poland	698688
+4	Wrocław	Poland	637075
+5	Poznań	Poland	541561
+6	Gdańsk	Poland	462996
+7	Szczecin	Poland	405413
+8	Bydgoszcz	Poland	354990
+9	Lublin	Poland	340745
+10	Katowice	Poland	299012
+11	Białystok	Poland	294143
+12	Gdynia	Poland	250242
+13	Częstochowa	Poland	242300
+14	Radom	Poland	224857
+15	Sosnowiec	Poland	222586
+16	Toruń	Poland	206619
+17	Kielce	Poland	205902
+1	Berlin	Germany	3275000
+2	Hamburg	Germany	1686100
+3	Munich	Germany	1185400
+4	Cologne	Germany	965300
+5	Frankfurt	Germany	720000
+6	Essen	Germany	588800
+7	Dortmund	Germany	587600
+8	Stuttgart	Germany	581100
+9	Düsseldorf	Germany	568900
+10	Bremen	Germany	527900
+11	Hanover	Germany	516300
+12	Duisburg	Germany	513400
+13	Nuremberg	Germany	486700
+14	Leipzig	Germany	486100
+15	Dresden	Germany	473300
+16	Bochum	Germany	388100
+17	Wuppertal	Germany	365400
+18	Bielefeld	Germany	320900
+19	Bonn	Germany	307500
+20	Mannheim	Germany	306100
 
-Bolivia
-Brazil

@@ -7,14 +7,23 @@ uses
 
 type
   TObjectDataSet = class
-  public
-    FDataSet: TDataSet;
-    constructor Create(DataSet: TDataSet);
-    procedure ForEach(OnEachRow: TProc);
-  protected
   private
+    FDataSet: TDataSet;
+    procedure ForEach(NotifyDataSources: boolean; OnEachRow: TProc);
     procedure ConnectDBFieldsToObjectFields;
     procedure ConnectMethodsToEvents;
+  protected
+    function GetRecNo: integer;
+  public
+    constructor Create(DataSet: TDataSet);
+    procedure ForEachWithNotification(OnEachRow: TProc);
+    procedure ForEachMute(OnEachRow: TProc);
+    procedure First;
+    procedure Prior;
+    procedure Next;
+    function RecordCount :integer;
+    property DataSet: TDataSet read FDataSet;
+    property RecNo: integer read GetRecNo;
   end;
 
 implementation
@@ -33,12 +42,18 @@ begin
   ConnectMethodsToEvents;
 end;
 
-procedure TObjectDataSet.ForEach(OnEachRow: TProc);
+procedure TObjectDataSet.First;
+begin
+  FDataSet.First;
+end;
+
+procedure TObjectDataSet.ForEach(NotifyDataSources: boolean; OnEachRow: TProc);
 var
   bookmark: TBookmark;
 begin
   bookmark := FDataSet.GetBookmark;
-  FDataSet.DisableControls;
+  if NotifyDataSources then
+    FDataSet.DisableControls;
   try
     FDataSet.First;
     while not FDataSet.Eof do
@@ -50,8 +65,39 @@ begin
       FDataSet.GotoBookmark(bookmark);
   finally
     FDataSet.FreeBookmark(bookmark);
-    FDataSet.EnableControls;
+    if NotifyDataSources then
+      FDataSet.EnableControls;
   end;
+end;
+
+procedure TObjectDataSet.ForEachMute(OnEachRow: TProc);
+begin
+  ForEach(false, OnEachRow);
+end;
+
+procedure TObjectDataSet.ForEachWithNotification(OnEachRow: TProc);
+begin
+  ForEach(true, OnEachRow);
+end;
+
+function TObjectDataSet.GetRecNo: integer;
+begin
+  Result := FDataSet.RecNo;
+end;
+
+procedure TObjectDataSet.Next;
+begin
+  FDataSet.Next;
+end;
+
+procedure TObjectDataSet.Prior;
+begin
+  FDataSet.Prior;
+end;
+
+function TObjectDataSet.RecordCount: integer;
+begin
+  Result := FDataSet.RecordCount;
 end;
 
 procedure TObjectDataSet.ConnectDBFieldsToObjectFields;
